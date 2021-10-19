@@ -15,8 +15,8 @@
             #instruction {
                 text-align: center;
                 padding: 20px;
-                font-size: 2rem;
-                margin-top: 10rem;
+                font-size: 4rem;
+                margin-top: 20rem;
             }
 
             .code-digit {
@@ -31,11 +31,45 @@
                 color: white;
             }
 
+            .button {
+                background-color: white;
+                border: 1px solid black;
+                height: 170px;
+                width: 170px;
+                margin: 10px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 80px;
+                color: black;
+            }
+
+            .button:active {
+                background-color: black;
+                color: white;
+            }
+
             #code {
                 display: flex;
                 flex-direction: row;
                 flex-wrap: nowrap;
                 justify-content: center;
+            }
+
+            #buttons {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
+                margin: 50px 150px;
+            }
+
+            .red {
+                color: red;
+            }
+
+            .green {
+                color: green;
             }
         </style>
     </head>
@@ -48,17 +82,40 @@
         </div>
 
         <div class="code-digit-template"></div>
+        <div class="button-template"></div>
     </body>
 
     <script>
         $(document).ready(function() {
             showCode();
+            showButtons();
+
             function showCode() {
                 let digit = $('.code-digit-template');
 
                 for (let i = 1; i <= 4; i++) {
                     let new_digit = $(digit).clone().attr('digit', i).removeClass().addClass('code-digit').text(i);
                     $('#code').append(new_digit);
+                }
+            }
+
+            function showButtons() {
+                let button = $('.button-template');
+                let button_values = [1, 2, 3, 4, 5, 6, 7, 8, 9, 'DEL', 0, 'OK'];
+
+                for (let i = 1; i <= 12; i++) {
+                    let button_value = button_values[i - 1];
+                    let new_button = $(button).clone().attr('button', button_value).removeClass().addClass('button').text(button_value);
+
+                    if (button_value == 'DEL') {
+                        $(new_button).addClass('red');
+                    }
+
+                    if (button_value == 'OK') {
+                        $(new_button).addClass('green');
+                    }
+
+                    $('#buttons').append(new_button);
                 }
             }
         });
