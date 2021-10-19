@@ -1,0 +1,57 @@
+<html>
+    <head>
+        <title>Quest</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">
+
+        <style>
+            * {
+                font-family: 'Roboto', sans-serif;
+            }
+
+            .code-digit {
+                background-color: black;
+                height: 200px;
+                width: 200px;
+                margin: 10px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 150px;
+                color: white;
+            }
+
+            #code {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: nowrap;
+                justify-content: center;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="code">
+        </div>
+        <div id="buttons">
+
+        </div>
+
+        <div class="code-digit-template"></div>
+    </body>
+
+    <script>
+        $(document).ready(function() {
+            showCode();
+            function showCode() {
+                let digit = $('.code-digit-template');
+
+                for (let i = 1; i <= 4; i++) {
+                    let new_digit = $(digit).clone().attr('digit', i).removeClass().addClass('code-digit').text(i);
+                    $('#code').append(new_digit);
+                }
+            }
+        });
+    </script>
+</html>
