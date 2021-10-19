@@ -17,7 +17,7 @@
                 text-align: center;
                 padding: 20px;
                 font-size: 4rem;
-                margin-top: 20rem;
+                margin-top: 15rem;
             }
 
             .code-digit {
@@ -82,13 +82,17 @@
             #code.wrong .code-digit {
                 background-color: red;
             }
+
+            .hidden {
+                display: none;
+            }
          </style>
     </head>
     <body>
         <div id="instruction">
-            <span class="stage"><span class="stage-value">1</span> / 6</span>
+            <span class="stage"><span class="stage-value">0</span> / <span class="stage-number">2</span></span>
             <br>
-            Введіть 4-цифровий код
+            <span class="text">Введіть 4-цифровий код</span>
         </div>
         <div id="code" class="wrong">
         </div>
@@ -96,17 +100,20 @@
 
         </div>
 
-        <div class="code-digit-template"></div>
-        <button class="button-template"></button>
+        <div class="code-digit-template hidden"></div>
+        <button class="button-template hidden"></button>
     </body>
 
     <script>
         $(document).ready(function() {
             let code = [];
             let code_filled = 0;
-            let stage = 1;
+            let stage = 0;
+            let is_end = false;
 
-            let correct_codes = [['1', '5', '7', '3'], ['7', '4', '4', '5']];
+            let correct_codes = [['1', '5', '7', '3']];
+
+            $('.stage-number').text(correct_codes.length);
 
             emptyCode();
             showButtons();
@@ -148,6 +155,10 @@
             }
 
             $('#buttons').find('.button').click(function() {
+               if (is_end) {
+                   return false;
+               }
+
                let value = $(this).attr('button');
 
                if (parseInt(value) && code_filled < 4) {
@@ -174,11 +185,16 @@
                    setTimeout(function () {
                        emptyCode();
                    }, 200);
+
+                   if (stage == correct_codes.length) {
+                       $('.text').text('Вітаю!').addClass('green');
+                       is_end = true;
+                   }
                }
             });
 
             function checkCode() {
-                let correct_code = correct_codes[stage - 1];
+                let correct_code = correct_codes[stage];
                 console.log(correct_code);
                 console.log(code);
                 for (let i = 1; i <= 4; i++) {
