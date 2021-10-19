@@ -10,6 +10,7 @@
         <style>
             * {
                 font-family: 'Roboto', sans-serif;
+                touch-action: manipulation;
             }
 
             #instruction {
@@ -44,11 +45,6 @@
                 color: black;
             }
 
-            .button:active, .button:hover {
-                background-color: black;
-                color: white;
-                cursor: pointer;
-            }
 
             #code {
                 display: flex;
@@ -72,11 +68,29 @@
             .green {
                 color: green;
             }
-        </style>
+
+            .stage {
+                font-size: 7rem;
+                display: block;
+                margin: 1rem;
+            }
+
+            #code.correct .code-digit {
+                background-color: green;
+            }
+
+            #code.wrong .code-digit {
+                background-color: red;
+            }
+         </style>
     </head>
     <body>
-        <div id="instruction">Введіть 4-цифровий код</div>
-        <div id="code">
+        <div id="instruction">
+            <span class="stage"><span class="stage-value">1</span> / 6</span>
+            <br>
+            Введіть 4-цифровий код
+        </div>
+        <div id="code" class="wrong">
         </div>
         <div id="buttons">
 
@@ -88,14 +102,27 @@
 
     <script>
         $(document).ready(function() {
-            showCode();
+            let code = [];
+            let code_filled = 0;
+            let stage = 1;
+
+            let correct_codes = [['1', '5', '7', '3'], ['7', '4', '4', '5']];
+
+            emptyCode();
             showButtons();
+
+            function emptyCode() {
+                code = ['_', '_', '_', '_'];
+                code_filled = 0;
+                showCode();
+            }
 
             function showCode() {
                 let digit = $('.code-digit-template');
 
+                $('#code').removeClass().empty();
                 for (let i = 1; i <= 4; i++) {
-                    let new_digit = $(digit).clone().attr('digit', i).removeClass().addClass('code-digit').text(i);
+                    let new_digit = $(digit).clone().attr('digit', i).removeClass().addClass('code-digit').text(code[i - 1]);
                     $('#code').append(new_digit);
                 }
             }
@@ -118,6 +145,49 @@
 
                     $('#buttons').append(new_button);
                 }
+            }
+
+            $('#buttons').find('.button').click(function() {
+               let value = $(this).attr('button');
+
+               if (parseInt(value) && code_filled < 4) {
+                   code[code_filled++] = value;
+                   showCode();
+               }
+
+               if (value == 'DEL') {
+                   emptyCode();
+                   showCode();
+               }
+
+               if (value == 'OK') {
+                   let is_correct = checkCode();
+
+                   if (is_correct) {
+                       stage++;
+                       $('.stage-value').text(stage);
+                       $('#code').addClass('correct');
+                   } else {
+                       $('#code').addClass('wrong');
+                   }
+
+                   setTimeout(function () {
+                       emptyCode();
+                   }, 200);
+               }
+            });
+
+            function checkCode() {
+                let correct_code = correct_codes[stage - 1];
+                console.log(correct_code);
+                console.log(code);
+                for (let i = 1; i <= 4; i++) {
+                    if (correct_code[i - 1] != code[i - 1]) {
+                        return false;
+                    }
+                }
+
+                return true;
             }
         });
     </script>
