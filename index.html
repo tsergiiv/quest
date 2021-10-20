@@ -162,7 +162,7 @@
 
                let value = $(this).attr('button');
 
-               if (parseInt(value) && code_filled < 4) {
+               if (parseInt(value) >= 0 && code_filled < 4) {
                    code[code_filled++] = value;
                    showCode();
                }
