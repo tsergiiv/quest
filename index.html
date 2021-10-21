@@ -186,7 +186,6 @@
             }
 
             $(document).on('click', '.button', function(){
-                console.log('click');
                 if (is_end) {
                     return false;
                 }
@@ -222,7 +221,7 @@
                         startIncorrectTimer();
                     }
 
-                    console.log(incorrect_count);
+                    // console.log(incorrect_count);
 
                     setTimeout(function () {
                         if (incorrect_count >= 3) {
@@ -273,8 +272,8 @@
 
             function checkCode() {
                 let correct_code = correct_codes[stage];
-                console.log(correct_code);
-                console.log(code);
+                // console.log(correct_code);
+                // console.log(code);
                 for (let i = 1; i <= 4; i++) {
                     if (correct_code[i - 1] != code[i - 1]) {
                         return false;
