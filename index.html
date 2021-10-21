@@ -69,6 +69,10 @@
                 color: green;
             }
 
+            .grey {
+                background-color: #e0dede;
+            }
+
             .stage {
                 font-size: 7rem;
                 display: block;
@@ -164,6 +168,7 @@
                 let button = $('.button-template');
                 let button_values = [1, 2, 3, 4, 5, 6, 7, 8, 9, 'DEL', 0, 'OK'];
 
+                $('#buttons').empty();
                 for (let i = 1; i <= 12; i++) {
                     let button_value = button_values[i - 1];
                     let new_button = $(button).clone().attr('button', button_value).removeClass().addClass('button').text(button_value);
@@ -180,58 +185,59 @@
                 }
             }
 
-            $('#buttons').find('.button').click(function() {
-               if (is_end) {
-                   return false;
-               }
+            $(document).on('click', '.button', function(){
+                console.log('click');
+                if (is_end) {
+                    return false;
+                }
 
-               if (is_blocked) {
-                   return false;
-               }
+                if (is_blocked) {
+                    return false;
+                }
 
-               let value = $(this).attr('button');
+                let value = $(this).attr('button');
 
-               if (parseInt(value) >= 0 && code_filled < 4) {
-                   code[code_filled++] = value;
-                   showCode();
-               }
+                if (parseInt(value) >= 0 && code_filled < 4) {
+                    code[code_filled++] = value;
+                    showCode();
+                }
 
-               if (value == 'DEL') {
-                   emptyCode();
-                   showCode();
-               }
+                if (value == 'DEL') {
+                    emptyCode();
+                    showCode();
+                }
 
-               if (value == 'OK') {
-                   let is_correct = checkCode();
+                if (value == 'OK') {
+                    let is_correct = checkCode();
 
-                   if (is_correct) {
-                       stage++;
-                       incorrect_count = 0;
-                       $('.stage-value').text(stage);
-                       $('#code').addClass('correct');
-                       showItem();
-                   } else {
-                       $('#code').addClass('wrong');
-                       incorrect_count++;
-                       startIncorrectTimer();
-                   }
+                    if (is_correct) {
+                        stage++;
+                        incorrect_count = 0;
+                        $('.stage-value').text(stage);
+                        $('#code').addClass('correct');
+                        showItem();
+                    } else {
+                        $('#code').addClass('wrong');
+                        incorrect_count++;
+                        startIncorrectTimer();
+                    }
 
-                   console.log(incorrect_count);
+                    console.log(incorrect_count);
 
-                   setTimeout(function () {
-                       if (incorrect_count >= 3) {
-                           startTimer();
-                       } else {
-                           emptyCode();
-                       }
-                   }, 200);
+                    setTimeout(function () {
+                        if (incorrect_count >= 3) {
+                            startTimer();
+                        } else {
+                            emptyCode();
+                        }
+                    }, 200);
 
-                   if (stage == correct_codes.length) {
-                       $('.text').text('Вітаю!').addClass('green');
-                       $('#item').hide();
-                       is_end = true;
-                   }
-               }
+                    if (stage == correct_codes.length) {
+                        $('.text').text('Вітаю!').addClass('green');
+                        $('#item').hide();
+                        is_end = true;
+                    }
+                }
             });
 
             function startIncorrectTimer() {
@@ -241,8 +247,10 @@
             }
 
             function startTimer() {
-                let seconds = 60;
+                let seconds = 3;
                 is_blocked = true;
+
+                $('.button').text('').addClass('grey');
 
                 timer = setInterval(function() {
                     let first = Math.floor(seconds / 10);
@@ -256,6 +264,7 @@
                         clearInterval(timer);
                         is_blocked = false;
                         emptyCode();
+                        showButtons();
                     }
 
                     seconds--;
