@@ -250,7 +250,7 @@
                 let seconds = 60;
                 is_blocked = true;
 
-                $('.button').text('').addClass('grey');
+                $('.button').text('').attr('disabled', true).addClass('grey');
 
                 timer = setInterval(function() {
                     let first = Math.floor(seconds / 10);
